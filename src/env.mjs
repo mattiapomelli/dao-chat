@@ -9,11 +9,13 @@ export const env = createEnv({
       z.literal("mainnet"),
     ]),
     NEXT_PUBLIC_ALCHEMY_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_AIRSTACK_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     // CLIENT
     NEXT_PUBLIC_CHAIN: process.env.NEXT_PUBLIC_CHAIN,
     NEXT_PUBLIC_ALCHEMY_API_KEY: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
+    NEXT_PUBLIC_AIRSTACK_API_KEY: process.env.NEXT_PUBLIC_AIRSTACK_API_KEY,
   },
   skipValidation:
     !!process.env.SKIP_ENV_VALIDATION &&

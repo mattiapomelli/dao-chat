@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
+import { init } from "@airstack/airstack-react";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -24,6 +25,8 @@ const { chains, provider } = configureChains(CHAINS, [
   alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
   publicProvider(),
 ]);
+
+init(env.NEXT_PUBLIC_AIRSTACK_API_KEY);
 
 const { connectors } = getDefaultWallets({
   appName: "Web3 Boilerplate",
