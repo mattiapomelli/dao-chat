@@ -3,6 +3,7 @@ import { useAccount } from "wagmi";
 
 import { Logo } from "@components/basic/logo";
 import { ThemeToggle } from "@components/basic/theme-toggle";
+import { ChainSwitch } from "@components/chain-switch";
 import { WalletStatus } from "@components/wallet/wallet-status";
 import { useTransitionControl } from "@hooks/use-transition-control";
 
@@ -16,7 +17,7 @@ export const Navbar = () => {
   return (
     <header className="flex h-20 items-center">
       <Container className="flex w-full items-center justify-between">
-        <Logo />
+        <Logo className="hidden sm:block" />
         <Transition
           show={show}
           enter="transition-opacity duration-250"
@@ -28,6 +29,7 @@ export const Navbar = () => {
         >
           <div className="flex items-center gap-4">
             <ThemeToggle />
+            <ChainSwitch />
             <WalletStatus />
           </div>
         </Transition>
