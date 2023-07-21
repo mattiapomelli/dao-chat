@@ -32,7 +32,7 @@ const Home: NextPage = () => {
 
     const memberAddresses = [
       "0x997b456Be586997A2F6d6D650FC14bF5843c92B2",
-      "0x26FddC1C2c84e61457734a17C6818a6E063644ec",
+      "0x498c3DdbEe3528FB6f785AC150C9aDb88C7d372c",
     ];
     const groupConversation = await client.conversations.newGroupConversation(
       memberAddresses,
@@ -55,7 +55,7 @@ const Home: NextPage = () => {
 
       <div className="flex gap-6">
         <div className="flex-1">
-          <h1 className="my-6 text-xl font-bold">Conversations</h1>
+          <h1 className="my-6 text-xl font-bold">Your DAOs</h1>
           <div className="flex flex-col gap-4">
             {conversations?.map((conversation) => (
               <div

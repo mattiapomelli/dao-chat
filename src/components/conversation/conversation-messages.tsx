@@ -5,6 +5,7 @@ import { Input } from "@components/basic/input";
 import { useMakeProposal } from "@components/lib/xmtp/use-make-proposal";
 import { useMessages } from "@components/lib/xmtp/use-messages";
 import { useSendMessage } from "@components/lib/xmtp/use-send-message";
+import { useStreamMessages } from "@components/lib/xmtp/use-stream-messages";
 import { ConversationWithTitle } from "types/xmtp";
 
 import { Message } from "./message";
@@ -18,6 +19,13 @@ export const ConversationMessages = ({
 }: ConversationMessagesProps) => {
   const { data: messages, refetch } = useMessages({
     conversation,
+  });
+
+  useStreamMessages({
+    conversation,
+    onMessage() {
+      refetch();
+    },
   });
 
   const { mutate: sendMessage } = useSendMessage({

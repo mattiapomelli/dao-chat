@@ -10,6 +10,9 @@ export const ContentTypePollKey = new ContentTypeId({
 interface PollContent {
   question: string;
   options: string[];
+  metadata?: {
+    [key: string]: string;
+  };
 }
 
 export class PollCodec implements ContentCodec<PollContent> {
