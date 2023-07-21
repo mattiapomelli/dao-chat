@@ -2,10 +2,10 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@components/basic/button";
 import { Input } from "@components/basic/input";
-import { useMakeProposal } from "@lib/xmtp/use-make-proposal";
-import { useMessages } from "@lib/xmtp/use-messages";
-import { useSendMessage } from "@lib/xmtp/use-send-message";
-import { useStreamMessages } from "@lib/xmtp/use-stream-messages";
+import { useMakeProposal } from "@lib/conversation/use-make-proposal";
+import { useMessages } from "@lib/conversation/use-messages";
+import { useSendMessage } from "@lib/conversation/use-send-message";
+import { useStreamMessages } from "@lib/conversation/use-stream-messages";
 import { ConversationWithTitle } from "types/xmtp";
 
 import { Message } from "./message";

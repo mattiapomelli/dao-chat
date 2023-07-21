@@ -12,6 +12,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@airstack/airstack-react": "^0.4.5",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.18",
     "@metamask/jazzicon": "^2.0.0",

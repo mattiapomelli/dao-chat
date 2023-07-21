@@ -2,7 +2,7 @@ import { Client } from "@xmtp/xmtp-js";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useSigner } from "wagmi";
 
-import { PollCodec } from "@lib/xmtp/poll-codec";
+import { PollCodec } from "@lib/conversation/poll-codec";
 
 interface XmptContextValue {
   client: Client | null;
