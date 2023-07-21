@@ -21,17 +21,18 @@ export const ConversationMessages = ({
     conversation,
   });
 
-  useStreamMessages({
-    conversation,
-    onMessage() {
-      refetch();
-    },
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<{ content: string }>();
 
   const { mutate: sendMessage } = useSendMessage({
     conversation,
     onSuccess() {
       refetch();
+      reset();
     },
   });
 
@@ -42,11 +43,12 @@ export const ConversationMessages = ({
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<{ content: string }>();
+  useStreamMessages({
+    conversation,
+    onMessage() {
+      refetch();
+    },
+  });
 
   const onSubmit = handleSubmit((data) => {
     sendMessage({
