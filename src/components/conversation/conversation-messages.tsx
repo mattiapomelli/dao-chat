@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@components/basic/button";
 import { Input } from "@components/basic/input";
+import { useMakeProposal } from "@components/lib/xmtp/use-make-proposal";
 import { useMessages } from "@components/lib/xmtp/use-messages";
 import { useSendMessage } from "@components/lib/xmtp/use-send-message";
 import { ConversationWithTitle } from "types/xmtp";
@@ -26,6 +27,13 @@ export const ConversationMessages = ({
     },
   });
 
+  const { mutate: makeProposal } = useMakeProposal({
+    conversation,
+    onSuccess() {
+      refetch();
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -37,6 +45,13 @@ export const ConversationMessages = ({
       content: data.content,
     });
   });
+
+  const sendProposal = () => {
+    makeProposal({
+      proposal: "Proposal title",
+      options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    });
+  };
 
   return (
     <div>
@@ -56,6 +71,7 @@ export const ConversationMessages = ({
         />
         <Button>Send</Button>
       </form>
+      <Button onClick={sendProposal}>Make Proposal</Button>
     </div>
   );
 };
