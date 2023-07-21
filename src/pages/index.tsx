@@ -1,10 +1,11 @@
-import { GroupChat, Conversation } from "@xmtp/xmtp-js";
+import { GroupChat } from "@xmtp/xmtp-js";
 import React, { useState } from "react";
 
 import { Button } from "@components/basic/button";
 import { ConversationMessages } from "@components/conversation/conversation-messages";
-import { useConversations } from "@hooks/xmtp/use-conversations";
+import { useConversations } from "@components/lib/xmtp/use-conversations";
 import { useXmtp } from "@providers/xmtp-provider";
+import { ConversationWithTitle } from "types/xmtp";
 
 import type { NextPage } from "next";
 
@@ -13,7 +14,7 @@ const Home: NextPage = () => {
   const { data: conversations } = useConversations();
 
   const [selectedConversation, setselectedConversation] =
-    useState<Conversation | null>(null);
+    useState<ConversationWithTitle | null>(null);
 
   // console.log("Cons:", conversations);
 

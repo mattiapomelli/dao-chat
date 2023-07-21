@@ -17,6 +17,8 @@ export const useMessages = ({ conversation }: UseMessageOptions) => {
 
       const messages = await conversation.messages();
 
+      console.log("Messages", messages);
+
       return messages.filter(
         (message) => message.contentType.typeId !== "groupChatTitleChanged",
       );
