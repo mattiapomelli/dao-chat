@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 import { Button } from "@components/basic/button";
 import { ConversationMessages } from "@components/conversation/conversation-messages";
-import { useConversations } from "@components/lib/xmtp/use-conversations";
+import { useConversations } from "@lib/xmtp/use-conversations";
 import { useXmtp } from "@providers/xmtp-provider";
 import { ConversationWithTitle } from "types/xmtp";
 
