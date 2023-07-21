@@ -2,6 +2,8 @@ import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { DefaultSeo } from "next-seo";
 import { ThemeProvider } from "next-themes";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
@@ -11,6 +13,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { CHAINS } from "@constants/chains";
 import { DefaultLayout } from "@layouts/default-layout";
 import { env } from "env.mjs";
+import { XmtpProvider } from "providers/xmtp-provider";
 
 import SEO from "../../next-seo.config";
 
@@ -27,6 +30,8 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
+const queryClient = new QueryClient();
+
 const client = createClient({
   autoConnect: true,
   connectors,
@@ -40,14 +45,20 @@ function MyApp({ Component, pageProps }: AppProps) {
     ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
   return (
-    <WagmiConfig client={client}>
-      <RainbowKitProvider chains={chains}>
-        <ThemeProvider>
-          <DefaultSeo {...SEO} />
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+
+      <WagmiConfig client={client}>
+        <RainbowKitProvider chains={chains}>
+          <ThemeProvider>
+            <XmtpProvider>
+              <DefaultSeo {...SEO} />
+              {getLayout(<Component {...pageProps} />)}
+            </XmtpProvider>
+          </ThemeProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </QueryClientProvider>
   );
 }
 
