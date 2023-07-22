@@ -12,7 +12,10 @@ export default function EasPage() {
   });
 
   const onCreateAttestation = async () => {
-    createAttestation();
+    createAttestation({
+      proposalId: "",
+      choice: 1,
+    });
   };
 
   return (

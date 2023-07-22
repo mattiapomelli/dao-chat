@@ -56,13 +56,13 @@ export default async function handler(
     "string snapshotProposalId,uint8 choice",
   );
   const encodedData = schemaEncoder.encodeData([
-    { name: "snapshotProposalId", value: "abcd", type: "string" },
-    { name: "choice", value: 1, type: "uint8" },
+    { name: "snapshotProposalId", value: proposalId, type: "string" },
+    { name: "choice", value: choice, type: "uint8" },
   ]);
 
   const offchainAttestation = await offchain.signOffchainAttestation(
     {
-      recipient: "0x0F45421E8DC47eF9edd8568a9D569b6fc7Aa7AC6",
+      recipient: address,
       // Unix timestamp of when attestation expires. (0 for no expiration)
       expirationTime: 0,
       // Unix timestamp of current time

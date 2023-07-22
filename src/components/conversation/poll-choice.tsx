@@ -2,6 +2,7 @@ import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import cx from "classnames";
 
 import { useVote } from "@lib/conversation/use-vote";
+import { useCreateAttestation } from "@lib/eas/use-create-attestation";
 import { useXmtp } from "@providers/xmtp-provider";
 
 const getVoteCount = (
@@ -72,10 +73,25 @@ export const PollChoice = ({
   onVote,
 }: PollChoiceProps) => {
   const { userAddress } = useXmtp();
+  const snapshotVoteIndex = voteIndex + 1;
+
+  const { mutate: createAttestation } = useCreateAttestation({
+    onSuccess(attestationUid) {
+      console.log(
+        "link",
+        `https://sepolia.easscan.org/offchain/attestation/view/${attestationUid}`,
+      );
+    },
+  });
+
   const { mutate: vote } = useVote({
     conversation,
     onSuccess() {
       onVote?.();
+      createAttestation({
+        proposalId: proposalId,
+        choice: snapshotVoteIndex,
+      });
     },
   });
 
@@ -97,7 +113,7 @@ export const PollChoice = ({
         vote({
           pollId,
           proposalId: proposalId,
-          vote: voteIndex + 1,
+          vote: snapshotVoteIndex,
         })
       }
       className={cx(

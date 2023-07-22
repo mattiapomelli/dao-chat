@@ -1,21 +1,30 @@
 import { useMutation } from "@tanstack/react-query";
 
+import { useXmtp } from "@providers/xmtp-provider";
+
 interface UseCreateAttestationOptions {
   onSuccess?: (attestationUid: string) => void;
 }
 
+interface UseCreateAttestationParams {
+  proposalId: string;
+  choice: number;
+}
+
 export const useCreateAttestation = (options?: UseCreateAttestationOptions) => {
+  const { userAddress } = useXmtp();
+
   return useMutation(
-    async () => {
+    async ({ choice, proposalId }: UseCreateAttestationParams) => {
       const res = await fetch("/api/eas", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          address: "0x123",
-          proposalId: "0x456",
-          choice: 1,
+          address: userAddress,
+          proposalId,
+          choice,
         }),
       });
 
