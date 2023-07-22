@@ -26,6 +26,7 @@ export const XmtpProvider = ({ children }: { children: ReactNode }) => {
     const client = await Client.create(null, {
       privateKeyOverride: keys,
       codecs: [new PollCodec()],
+      env: "production",
     });
 
     client.enableGroupChat();
