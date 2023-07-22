@@ -33,9 +33,6 @@ export default function handler(
   ).then(async (verifyRes) => {
     const wldResponse = await verifyRes.json();
 
-    console.log("Yo");
-    console.log("Verify res: ", verifyRes.status);
-
     if (verifyRes.status == 200) {
       await supabase
         .from("users")
