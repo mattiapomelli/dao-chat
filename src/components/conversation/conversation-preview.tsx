@@ -1,6 +1,7 @@
 import cx from "classnames";
 import Blockies from "react-blockies";
 
+import { useConversationSpace } from "@lib/conversation/get-conversation-space";
 import { ConversationWithTitle } from "types/xmtp";
 
 interface ConversationMessagesProps {
@@ -14,6 +15,10 @@ export const ConversationPreview = ({
   onClick,
   active,
 }: ConversationMessagesProps) => {
+  const { data: space } = useConversationSpace({
+    conversation,
+  });
+
   return (
     <div
       className={cx(
@@ -31,7 +36,19 @@ export const ConversationPreview = ({
         size={8}
         className="rounded-full"
       />
-      <h4 className="text-lg font-bold">{conversation.title}</h4>
+      <div
+      // className="flex flex-1 items-center justify-between"
+      >
+        <p className="text-lg font-bold">{conversation.title}</p>
+        <a
+          href={`https://demo.snapshot.org/#/${space}/`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-blue-500 underline"
+        >
+          View on Snapshot
+        </a>
+      </div>
     </div>
   );
 };
