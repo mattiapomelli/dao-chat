@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Conversation } from "@xmtp/xmtp-js";
 import { providers } from "ethers";
 
-import { APP_NAME, DEFAULT_SPACE, SNAPSHOT_URL } from "@utils/constants";
+import { APP_NAME, SNAPSHOT_URL } from "@utils/constants";
 
 import { ContentTypeVotePollKey } from "./poll-vote-codex";
 
@@ -13,6 +13,7 @@ interface VoteProposalOptions {
 }
 
 interface VoteProposalParams {
+  space: string;
   pollId: string;
   proposalId: string;
   vote: number;
@@ -20,7 +21,7 @@ interface VoteProposalParams {
 
 export const useVote = ({ onSuccess, conversation }: VoteProposalOptions) => {
   return useMutation(
-    async ({ pollId, proposalId, vote }: VoteProposalParams) => {
+    async ({ space, pollId, proposalId, vote }: VoteProposalParams) => {
       const hub = SNAPSHOT_URL;
       const client = new snapshot.Client712(hub);
 
@@ -38,7 +39,7 @@ export const useVote = ({ onSuccess, conversation }: VoteProposalOptions) => {
 
         // Vote on Snapshot
         const receipt = await client.vote(provider, address, {
-          space: DEFAULT_SPACE,
+          space,
           proposal: proposalId,
           type: "single-choice",
           choice: vote,

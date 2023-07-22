@@ -60,7 +60,9 @@ const ConversationListInner = ({
     <>
       {conversations?.length === 0 && (
         <div className="flex h-full flex-col items-center justify-center py-40">
-          <p>You are not a member of any group chat yet</p>
+          <p className="text-center">
+            You are not a member of any group chat yet
+          </p>
         </div>
       )}
       {conversations?.map((conversation) => (

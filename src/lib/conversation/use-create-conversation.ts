@@ -5,6 +5,7 @@ import { useXmtp } from "@providers/xmtp-provider";
 
 import { getConversationMembers } from "./get-conversation-members";
 import { getSpace } from "./get-space";
+import { ContentUpdateMetadataKey } from "./update-metadata-codec";
 
 interface SendMessageOptions {
   onSuccess?: () => void;
@@ -77,6 +78,19 @@ export const useCreateConversation = (options?: SendMessageOptions) => {
             groupConversation,
           );
           await groupChat.changeTitle(spaceName);
+
+          // Send message to update metadata and set Snapshot space
+          await groupConversation.send(
+            {
+              metadata: {
+                space: title,
+              },
+            },
+            {
+              contentType: ContentUpdateMetadataKey,
+              contentFallback: "This is an update of group metadata.",
+            },
+          );
         }
       }
     },

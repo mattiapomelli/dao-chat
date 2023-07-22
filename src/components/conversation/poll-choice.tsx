@@ -1,6 +1,7 @@
 import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import cx from "classnames";
 
+import { useConversationSpace } from "@lib/conversation/get-conversation-space";
 import { useVote } from "@lib/conversation/use-vote";
 import { useCreateAttestation } from "@lib/eas/use-create-attestation";
 import { useXmtp } from "@providers/xmtp-provider";
@@ -72,6 +73,10 @@ export const PollChoice = ({
   proposalId,
   onVote,
 }: PollChoiceProps) => {
+  const { data: space } = useConversationSpace({
+    conversation,
+  });
+
   const { userAddress } = useXmtp();
   const snapshotVoteIndex = voteIndex + 1;
 
@@ -108,16 +113,20 @@ export const PollChoice = ({
   const isDisabled = disabled || hasVoted;
   // const isDisabled = false;
 
+  const onSubmitVote = () => {
+    if (!space) return;
+    vote({
+      space,
+      pollId,
+      proposalId: proposalId,
+      vote: snapshotVoteIndex,
+    });
+  };
+
   return (
     <button
       key={choice}
-      onClick={() =>
-        vote({
-          pollId,
-          proposalId: proposalId,
-          vote: snapshotVoteIndex,
-        })
-      }
+      onClick={onSubmitVote}
       className={cx(
         "rounded-box w-full py-2 px-4 disabled:cursor-not-allowed",
         {

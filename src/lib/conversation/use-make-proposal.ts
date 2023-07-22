@@ -1,7 +1,7 @@
 import snapshot from "@snapshot-labs/snapshot.js";
 import { useMutation } from "@tanstack/react-query";
 import { Conversation } from "@xmtp/xmtp-js";
-import { providers } from "ethers";
+import { ethers, providers } from "ethers";
 import { v4 as uuidv4 } from "uuid";
 
 import { useXmtp } from "@providers/xmtp-provider";
@@ -51,6 +51,11 @@ export const useMakeProposal = ({
         const signer = provider.getSigner();
         const address = await signer.getAddress();
 
+        const polygonProvider = new ethers.providers.JsonRpcProvider(
+          "https://polygon-rpc.com/",
+        );
+        const lastBlock = await polygonProvider.getBlockNumber();
+
         const receipt = await snapshotClient.proposal(provider, address, {
           space,
           type: "single-choice",
@@ -59,7 +64,7 @@ export const useMakeProposal = ({
           choices,
           start,
           end,
-          snapshot: 17745695, //(await provider.getBlockNumber()) - 128,
+          snapshot: lastBlock - 128,
           // @ts-ignore
           network: NETWORK_ID,
           plugins: JSON.stringify({}),

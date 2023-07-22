@@ -24,7 +24,7 @@ export const useStreamMessages = ({
           continue;
         }
         console.log(
-          `New message from ${message.senderAddress}: ${message.content}`,
+          `New message streamed from ${message.senderAddress}: ${message.content}`,
         );
         onMessage(message);
       }

@@ -3,6 +3,7 @@ import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 
 import { Button } from "@components/basic/button";
 import WorldcoinIcon from "@icons/worldcoin.svg";
+import { useConversationSpace } from "@lib/conversation/get-conversation-space";
 import { useIsVerifiedWithWorldcoin } from "@lib/worldcoin/use-is-verified-worldcoin";
 import { useVerifyWithWorldcoin } from "@lib/worldcoin/use-verify-worldcoin";
 import { formatDateTime, toSeconds } from "@utils/dates";
@@ -23,16 +24,20 @@ export const Poll = ({
   allMessages,
   onVote,
 }: PollProps) => {
+  const { data: space } = useConversationSpace({
+    conversation,
+  });
+
   const { data: isVerified, refetch } = useIsVerifiedWithWorldcoin();
   const { mutate: verify } = useVerifyWithWorldcoin();
 
   const pollId = message.content.id;
   const isExpired = toSeconds(Date.now()) > message.content.end;
-  const snapshotUrl = `https://demo.snapshot.org/#/${message.content?.metadata?.space}/proposal/${message.content?.metadata?.proposalId}`;
+  const snapshotUrl = `https://demo.snapshot.org/#/${space}/proposal/${message.content?.metadata?.proposalId}`;
 
   return (
     <>
-      <p className="font-bold">{message.content.title} ( )</p>
+      <p className="font-bold">{message.content.title}</p>
       <p className="mb-3 text-base-content-neutral">{message.content.body}</p>
       <p className="mb-2">Ends at: {formatDateTime(message.content.end)}</p>
       <div>

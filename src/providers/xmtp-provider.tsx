@@ -5,6 +5,7 @@ import { useSigner } from "wagmi";
 import { EasAttestationCodec } from "@lib/conversation/eas-attestation-codec";
 import { PollCodec } from "@lib/conversation/poll-codec";
 import { PollVoteCodec } from "@lib/conversation/poll-vote-codex";
+import { UpdateMetadataCodec } from "@lib/conversation/update-metadata-codec";
 
 interface XmptContextValue {
   client: Client | null;
@@ -27,7 +28,12 @@ export const XmtpProvider = ({ children }: { children: ReactNode }) => {
     // Create a client using keys returned from getKeys
     const client = await Client.create(null, {
       privateKeyOverride: keys,
-      codecs: [new PollCodec(), new PollVoteCodec(), new EasAttestationCodec()],
+      codecs: [
+        new PollCodec(),
+        new PollVoteCodec(),
+        new EasAttestationCodec(),
+        new UpdateMetadataCodec(),
+      ],
       env: "production",
     });
 

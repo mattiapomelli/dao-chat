@@ -10,8 +10,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@components/basic/button";
 import { Input } from "@components/basic/input";
 import { TextArea } from "@components/basic/textarea/textarea";
+import { useConversationSpace } from "@lib/conversation/get-conversation-space";
 import { useMakeProposal } from "@lib/conversation/use-make-proposal";
-import { DEFAULT_SPACE, PROPOSAL_DAYS } from "@utils/constants";
+import { PROPOSAL_DAYS } from "@utils/constants";
 import { toSeconds } from "@utils/dates";
 import { ConversationWithTitle } from "types/xmtp";
 
@@ -42,6 +43,12 @@ export const ProposalForm = ({
   onCancel,
   className,
 }: ConversationMessagesProps) => {
+  const { data: space } = useConversationSpace({
+    conversation,
+  });
+
+  console.log("Space: ", space);
+
   const { register, handleSubmit } = useForm<IFormInput>({
     defaultValues: {
       startDate: new Date().toISOString().split("T")[0],
@@ -62,8 +69,10 @@ export const ProposalForm = ({
   });
 
   const createProposal: SubmitHandler<IFormInput> = async (data) => {
+    if (!space) return;
+
     makeProposal({
-      space: DEFAULT_SPACE, // TODO: change with DAO space
+      space,
       title: data.title,
       body: data.description,
       choices: [data.choice1, data.choice2, data.choice3, data.choice4],
