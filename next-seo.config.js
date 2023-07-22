@@ -1,5 +1,5 @@
-const title = "My App";
-const description = "This is my awesome app";
+const title = "DAOChat";
+const description = "Manage your DAO as a group chat";
 const url = "https://beta.cryvia.xyz/";
 
 // eslint-disable-next-line import/no-anonymous-default-export
