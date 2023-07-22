@@ -9,7 +9,7 @@ export type ChainMap = { [chainId: number]: string };
 const getChains = () => {
   switch (env.NEXT_PUBLIC_CHAIN) {
     case "localhost":
-      return [hardhat, sepolia];
+      return [sepolia];
     case "testnet":
       return [sepolia];
     case "mainnet":
