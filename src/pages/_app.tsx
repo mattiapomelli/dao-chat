@@ -4,7 +4,8 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { init } from "@airstack/airstack-react";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Space_Grotesk } from "next/font/google";
 import { DefaultSeo } from "next-seo";
 import { ThemeProvider } from "next-themes";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
@@ -48,14 +49,18 @@ const client = createClient({
   persister: null,
 });
 
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
+
 function MyApp({ Component, pageProps }: AppProps) {
   const getLayout =
     (Component as ExtendedPage).getLayout ||
-    ((page) => <DefaultLayout>{page}</DefaultLayout>);
+    ((page) => (
+      <DefaultLayout className={spaceGrotesk.className}>{page}</DefaultLayout>
+    ));
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
 
       <WagmiConfig client={client}>
         <RainbowKitProvider chains={chains}>

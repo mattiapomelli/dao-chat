@@ -64,7 +64,7 @@ export const Message = ({
       <div className="rounded-box bg-base-300 p-4">
         <div className="mb-2 flex items-center gap-2">
           <Popover className="relative">
-            <Popover.Button>
+            <Popover.Button className="flex gap-2">
               <Blockies
                 data-testid="avatar"
                 seed={message.senderAddress}

@@ -1,3 +1,4 @@
+import cx from "classnames";
 import React, { useState } from "react";
 
 import { ConversationMessages } from "@components/conversation/conversation-messages";
@@ -15,9 +16,15 @@ const Home: NextPage = () => {
       <ConversationsList
         selectedConversation={selectedConversation}
         onSelectConversation={setSelectedConversation}
-        className="h-screen basis-1/3 overflow-auto"
+        className={cx("h-screen basis-full overflow-auto md:basis-1/3", {
+          "hidden md:block": selectedConversation !== null,
+        })}
       />
-      <div className="h-screen flex-1">
+      <div
+        className={cx("h-screen flex-1", {
+          "hidden md:block": selectedConversation === null,
+        })}
+      >
         {selectedConversation ? (
           <ConversationMessages conversation={selectedConversation} />
         ) : (

@@ -13,7 +13,7 @@ const getChains = () => {
     case "testnet":
       return [sepolia];
     case "mainnet":
-      throw [polygon];
+      throw [sepolia];
     default:
       throw new Error("Invalid NEXT_PUBLIC_CHAIN value");
   }

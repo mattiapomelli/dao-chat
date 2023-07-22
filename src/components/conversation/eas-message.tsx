@@ -9,7 +9,7 @@ interface EasMessageProps {
 export const EasMessage = ({ attestationUid }: EasMessageProps) => {
   return (
     <div>
-      <div className="my-4 flex items-center">
+      <div className="my-4 flex items-center gap-2">
         <Image src={"/eas.png"} width={45} height={45} alt="EAS Logo" />
         <p className="max-w-[180px]">Vote Attestation, powered by EAS</p>
       </div>
