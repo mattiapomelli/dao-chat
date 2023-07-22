@@ -4,8 +4,8 @@ import { Button } from "@components/basic/button";
 
 export const Hero = () => {
   return (
-    <section className="relative flex flex-col items-center gap-6 py-36 text-center">
-      <h1 className="max-w-[60rem] text-6xl font-bold md:text-6xl">
+    <section className="relative flex flex-col items-center gap-6 py-28 text-center">
+      <h1 className="max-w-[50rem] text-6xl font-bold md:text-6xl">
         Manage your DAO as a group chat
       </h1>
       <p className="max-w-[26rem] text-2xl text-base-content-neutral sm:max-w-[40rem]">
