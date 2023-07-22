@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { Address } from "@components/address";
 import { Button } from "@components/basic/button";
 import { Input } from "@components/basic/input";
+import { useConversationSpace } from "@lib/conversation/get-conversation-space";
 import { useMessages } from "@lib/conversation/use-messages";
 import { useSendMessage } from "@lib/conversation/use-send-message";
 import { useStreamMessages } from "@lib/conversation/use-stream-messages";
@@ -23,6 +24,9 @@ export const ConversationMessages = ({
   conversation,
   className,
 }: ConversationMessagesProps) => {
+  const { data: space } = useConversationSpace({
+    conversation,
+  });
   const [showProposalForm, setShowProposalForm] = useState(false);
   const { data: messages, refetch } = useMessages({
     conversation,
@@ -64,7 +68,7 @@ export const ConversationMessages = ({
       <div className="flex items-center gap-4 border-b border-b-base-300 p-4">
         <Blockies
           data-testid="avatar"
-          seed={"0x8d960334c2EF30f425b395C1506Ef7c5783789F3"}
+          seed={space}
           scale={5}
           size={8}
           className="rounded-full"

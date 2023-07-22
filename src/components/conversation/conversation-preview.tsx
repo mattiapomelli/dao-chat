@@ -31,7 +31,7 @@ export const ConversationPreview = ({
     >
       <Blockies
         data-testid="avatar"
-        seed={"0x8d960334c2EF30f425b395C1506Ef7c5783789F3"}
+        seed={space}
         scale={5}
         size={8}
         className="rounded-full"
