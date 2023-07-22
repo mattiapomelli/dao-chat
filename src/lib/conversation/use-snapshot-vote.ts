@@ -39,14 +39,14 @@ export const useSnapshotVote = ({
         console.log("pid", proposalId);
         console.log("vote", vote);
 
-        // const receipt = await client.vote(provider, address, {
-        //   space: DEFAULT_SPACE,
-        //   proposal: proposalId,
-        //   type: "single-choice",
-        //   choice: vote,
-        //   app: APP_NAME,
-        // });
-        // console.log("Vote result: ", receipt);
+        const receipt = await client.vote(provider, address, {
+          space: DEFAULT_SPACE,
+          proposal: proposalId,
+          type: "single-choice",
+          choice: vote,
+          app: APP_NAME,
+        });
+        console.log("Vote result: ", receipt);
 
         const message = await conversation.send(
           {
