@@ -1,8 +1,9 @@
 import cx from "classnames";
+import { useState } from "react";
 
 import { Button } from "@components/basic/button";
+import { CreateChatModal } from "@components/create-chat-modal";
 import { useConversations } from "@lib/conversation/use-conversations";
-import { useCreateConversation } from "@lib/conversation/use-create-conversation";
 import { useXmtp } from "@providers/xmtp-provider";
 import { ConversationWithTitle } from "types/xmtp";
 
@@ -19,26 +20,21 @@ export const ConversationsList = ({
   selectedConversation,
   className,
 }: ConversationsListProps) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { isConnected, connect } = useXmtp();
   const { data: conversations, refetch } = useConversations();
-
-  const { mutate: createConversation } = useCreateConversation({
-    onSuccess() {
-      refetch();
-    },
-  });
-
-  const onCreateConversation = async () => {
-    createConversation({
-      title: "Test",
-    });
-  };
 
   return (
     <div className={cx("bg-base-200", className)}>
       <div className="flex items-center justify-between px-4">
         <h1 className="my-6 text-xl font-bold">Your DAOs</h1>
-        <Button onClick={onCreateConversation}>New DAO Chat</Button>
+        <CreateChatModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onSuccess={refetch}
+        />
+        <Button onClick={() => setModalOpen(true)}>New DAO Chat</Button>
       </div>
       <div className="flex flex-col">
         {!isConnected ? (

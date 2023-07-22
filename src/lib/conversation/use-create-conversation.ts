@@ -36,10 +36,8 @@ export const useCreateConversation = (options?: SendMessageOptions) => {
         (address) => address !== client.address,
       );
 
-      console.log("addressesWithXmtpEnabled", addressesWithXmtpEnabled);
-
       const groupConversation = await client.conversations.newGroupConversation(
-        memberAddresses,
+        addresses,
       );
 
       const groupChat = await GroupChat.fromConversation(
