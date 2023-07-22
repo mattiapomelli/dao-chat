@@ -95,7 +95,7 @@ export const getConversationMembers = async (
 
     // Get only the addresses with a minimum score
     const addressesWithXmtpEnabled = ownership
-      .filter((item) => item.count === minScore)
+      .filter((item) => item.count >= minScore)
       .map((item) => item.owner);
 
     return addressesWithXmtpEnabled;
