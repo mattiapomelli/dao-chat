@@ -27,6 +27,8 @@ export const useCreateConversation = (options?: SendMessageOptions) => {
       //   // "0x0F45421E8DC47eF9edd8568a9D569b6fc7Aa7AC6",
       // ];
 
+      // TODO: get token address from snapshot strategies
+
       const addressesWithXmtpEnabled = await getConversationMembers({
         blockchain: "ethereum",
         tokenAddress: "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b",
@@ -37,7 +39,7 @@ export const useCreateConversation = (options?: SendMessageOptions) => {
       );
 
       const groupConversation = await client.conversations.newGroupConversation(
-        addresses,
+        memberAddresses,
       );
 
       const groupChat = await GroupChat.fromConversation(
