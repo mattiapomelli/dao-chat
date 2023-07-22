@@ -48,7 +48,9 @@ export const Message = ({
   const { data: socialProfile } = useQuery(
     querySocialProfile,
     {
-      address: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", //address,
+      // address: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045", //address,
+      // address: "0xE7ddd0bB77DE97d98be39E8C8a3973C7C9308E4e", //address,
+      address: message.senderAddress,
     },
     { cache: false },
   );
@@ -77,7 +79,7 @@ export const Message = ({
                 className="font-bold"
               />
             </Popover.Button>
-            <Popover.Panel className="absolute z-10 rounded border-2 bg-white px-14 py-7 shadow">
+            <Popover.Panel className="absolute z-10 rounded border-2 border-base-300 bg-base-100 px-14 py-7 shadow">
               <div className="space-y-4 text-center">
                 <Blockies
                   data-testid="avatar"
@@ -89,7 +91,7 @@ export const Message = ({
                 <div>
                   {socialProfile &&
                     // @ts-ignore
-                    socialProfile.Wallet.socials.map((social) => (
+                    socialProfile.Wallet.socials?.map((social) => (
                       <p
                         key={social.dappName}
                         className="flex items-center gap-1"
@@ -107,7 +109,6 @@ export const Message = ({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {social.dappName}
                           {social.profileName}
                         </a>
                       </p>

@@ -52,8 +52,7 @@ export const useMakeProposal = ({
         const address = await signer.getAddress();
 
         const ethereumProvider = new ethers.providers.JsonRpcProvider(
-          // "https://eth.llamarpc.com	",
-          "https://polygon-rpc.com/",
+          "https://eth.llamarpc.com	",
         );
         const lastBlock = await ethereumProvider.getBlockNumber();
 
