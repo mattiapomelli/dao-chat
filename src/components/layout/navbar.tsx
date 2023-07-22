@@ -3,8 +3,8 @@ import { useAccount } from "wagmi";
 
 import { Logo } from "@components/basic/logo";
 import { ThemeToggle } from "@components/basic/theme-toggle";
-import { ChainSwitch } from "@components/chain-switch";
-import { WalletStatus } from "@components/wallet/wallet-status";
+// import { ChainSwitch } from "@components/chain-switch";
+// import { WalletStatus } from "@components/wallet/wallet-status";
 import { useTransitionControl } from "@hooks/use-transition-control";
 
 import { Container } from "./container";
@@ -29,8 +29,8 @@ export const Navbar = () => {
         >
           <div className="flex items-center gap-4">
             <ThemeToggle />
-            <ChainSwitch />
-            <WalletStatus />
+            {/* <ChainSwitch /> */}
+            {/* <WalletStatus /> */}
           </div>
         </Transition>
       </Container>

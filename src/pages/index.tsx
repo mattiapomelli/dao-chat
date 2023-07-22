@@ -1,43 +1,38 @@
 import cx from "classnames";
-import React, { useState } from "react";
+import { Space_Grotesk } from "next/font/google";
 
-import { ConversationMessages } from "@components/conversation/conversation-messages";
-import { ConversationsList } from "@components/conversation/conversations-list";
-import { ConversationWithTitle } from "types/xmtp";
+import { DaosNowSection } from "@components/landing/daos-now-section";
+import { Hero } from "@components/landing/hero";
+import { IntroductionSecion } from "@components/landing/introduction-section";
+import { ProblemSection } from "@components/landing/problem-secion";
+import { TechnologiesSecion } from "@components/landing/technologies-section";
+import { Container } from "@components/layout/container";
+import { Footer } from "@components/layout/footer";
+import { Navbar } from "@components/layout/navbar";
+import { ExtendedPage } from "@types";
 
-import type { NextPage } from "next";
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
-const Home: NextPage = () => {
-  const [selectedConversation, setSelectedConversation] =
-    useState<ConversationWithTitle | null>(null);
-
+const Home: ExtendedPage = () => {
   return (
-    <div className="flex">
-      <ConversationsList
-        selectedConversation={selectedConversation}
-        onSelectConversation={setSelectedConversation}
-        className={cx("h-screen basis-full overflow-auto md:basis-1/3", {
-          "hidden md:block": selectedConversation !== null,
-        })}
-      />
-      <div
-        className={cx("h-screen flex-1", {
-          "hidden md:block": selectedConversation === null,
-        })}
-      >
-        {selectedConversation ? (
-          <ConversationMessages
-            conversation={selectedConversation}
-            onBack={() => setSelectedConversation(null)}
-          />
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center py-40">
-            <p>No group chat selected</p>
-          </div>
-        )}
-      </div>
-    </div>
+    <>
+      <Hero />
+      <DaosNowSection />
+      <ProblemSection />
+      <IntroductionSecion />
+      <TechnologiesSecion />
+    </>
   );
 };
+
+Home.getLayout = (page) => (
+  <div className={cx("flex min-h-screen flex-col", spaceGrotesk.className)}>
+    <Navbar />
+    <main className="flex-1 overflow-x-hidden pb-20 pt-8">
+      <Container>{page}</Container>
+    </main>
+    <Footer />
+  </div>
+);
 
 export default Home;

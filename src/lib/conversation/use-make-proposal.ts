@@ -8,7 +8,7 @@ import { useXmtp } from "@providers/xmtp-provider";
 import {
   APP_NAME,
   DEFAULT_SPACE,
-  NETWORK_ID,
+  // NETWORK_ID,
   SNAPSHOT_APP_ID,
   SNAPSHOT_URL,
 } from "@utils/constants";
@@ -51,10 +51,11 @@ export const useMakeProposal = ({
         const signer = provider.getSigner();
         const address = await signer.getAddress();
 
-        const polygonProvider = new ethers.providers.JsonRpcProvider(
+        const ethereumProvider = new ethers.providers.JsonRpcProvider(
+          // "https://eth.llamarpc.com	",
           "https://polygon-rpc.com/",
         );
-        const lastBlock = await polygonProvider.getBlockNumber();
+        const lastBlock = await ethereumProvider.getBlockNumber();
 
         const receipt = await snapshotClient.proposal(provider, address, {
           space,
@@ -66,7 +67,7 @@ export const useMakeProposal = ({
           end,
           snapshot: lastBlock - 128,
           // @ts-ignore
-          network: NETWORK_ID,
+          network: 1,
           plugins: JSON.stringify({}),
           app: APP_NAME,
         });
