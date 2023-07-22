@@ -89,7 +89,7 @@ export const ConversationMessages = ({
             {conversationMembers.map((member, index) => (
               <Fragment key={member}>
                 <Address address={member as `0x${string}`} key={member} />
-                {index !== conversationMembers.length - 1 && ", "}
+                {index !== conversationMembers.length - 1 ? ", " : ", ..."}
               </Fragment>
             ))}
           </p>

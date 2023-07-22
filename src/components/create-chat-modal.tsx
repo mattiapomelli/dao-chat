@@ -40,7 +40,8 @@ export const CreateChatModal = ({
   return (
     <Modal title="Create Chat" open={open} onClose={onClose}>
       <p className="mb-6">
-        Create a chat for managing your DAO just by sending messages.
+        Create a group chat and manage everything for your DAO in a single
+        place.
       </p>
       <form onSubmit={onSubmit} className="flex flex-col gap-3">
         <Input
