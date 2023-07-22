@@ -16,6 +16,9 @@ const querySpace = gql`
         network
         params
       }
+      voteValidation {
+        params
+      }
     }
   }
 `;
