@@ -85,7 +85,13 @@ export const ConversationMessages = ({
 
       <div className="flex flex-1 flex-col gap-2 overflow-auto p-4">
         {messages?.map((message) => (
-          <Message message={message} key={message.id} />
+          <Message
+            message={message}
+            allMessages={messages}
+            key={message.id}
+            conversation={conversation}
+            onVote={refetch}
+          />
         ))}
       </div>
 

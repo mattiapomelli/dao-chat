@@ -20,7 +20,7 @@ export const useCreateConversation = (options?: SendMessageOptions) => {
     async ({ title }: SendMessageParams) => {
       if (!client) return;
 
-      // const addresses = [
+      // const memberAddresses = [
       //   "0x997b456Be586997A2F6d6D650FC14bF5843c92B2",
       //   "0x498c3DdbEe3528FB6f785AC150C9aDb88C7d372c",
       //   // "0x8d960334c2EF30f425b395C1506Ef7c5783789F3",
