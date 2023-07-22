@@ -89,12 +89,14 @@ export const ConversationMessages = ({
         ))}
       </div>
 
-      <div className="px-4 pb-4">
+      <div className="relative px-4 pb-4">
         {showProposalForm ? (
-          <>
-            <ProposalForm conversation={conversation} refetch={refetch} />
-            <Button onClick={() => setShowProposalForm(false)}>Cancel</Button>
-          </>
+          <ProposalForm
+            conversation={conversation}
+            refetch={refetch}
+            className="rounded-box absolute bottom-full w-[calc(100%-2rem)] bg-base-200 p-4"
+            onCancel={() => setShowProposalForm(false)}
+          />
         ) : (
           <>
             <form onSubmit={onSubmit} className="mt-10 flex flex-row gap-2">
