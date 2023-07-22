@@ -26,13 +26,13 @@ export const DaosNowSection = () => {
             className="order-2 md:order-1"
           />
           <p className="order-1 text-center text-4xl md:text-left">
-            Proposals are made on platforms like Snapshot, where members vote.
+            Proposals happen on platforms like Snapshot, where members vote.
           </p>
         </div>
         <div className="flex flex-col items-center gap-10 md:flex-row">
           <p className="text-center text-4xl md:text-left">
-            Discussions happen on forums like Discourse, where members share
-            ideas.
+            Governance discussions happen on dedicated forums, where members
+            share ideas.
           </p>
           <Image
             src={"/forum.png"}
