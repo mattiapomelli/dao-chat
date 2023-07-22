@@ -56,11 +56,11 @@ export const ProposalForm = ({
     conversation,
     onSuccess() {
       refetch();
+      onCancel?.();
     },
   });
 
   const createProposal: SubmitHandler<IFormInput> = async (data) => {
-    console.log("Data: ", data);
     makeProposal({
       space: DEFAULT_SPACE, // TODO: change with DAO space
       title: data.title,

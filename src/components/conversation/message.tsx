@@ -5,7 +5,7 @@ import Blockies from "react-blockies";
 import { Address } from "@components/address";
 import { useXmtp } from "@providers/xmtp-provider";
 
-import { PollMessage } from "./poll-message";
+import { Poll } from "./poll";
 
 interface MessageProps {
   message: DecodedMessage;
@@ -33,7 +33,7 @@ export const Message = ({ message }: MessageProps) => {
           />
         </div>
         {message.contentType.typeId === "poll" ? (
-          <PollMessage message={message} />
+          <Poll message={message} />
         ) : (
           <p>{message.content}</p>
         )}
