@@ -8,14 +8,15 @@ export const ContentTypePollKey = new ContentTypeId({
 });
 
 interface PollContent {
-  id: string;
-  title: string;
-  body: string;
-  choices: string[];
-  start: number;
-  end: number;
-  appId: string;
+  id: string; // Unique identifier for this poll, used to identify the poll in the poll votes
+  title: string; // Title of the poll
+  body: string; // Body of the poll
+  choices: string[]; // List of possible choices for the poll
+  start: number; // Timestamp of when the poll starts
+  end: number; // Timestamp of when the poll ends
+  appId: string; // Unique identifier for the app that the poll is for (e.g. Snapshot)
   metadata?: {
+    // Custom metadata for the poll, specific to the app
     [key: string]: string;
   };
 }

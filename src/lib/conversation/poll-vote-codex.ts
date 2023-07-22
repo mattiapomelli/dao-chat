@@ -8,8 +8,8 @@ export const ContentTypeVotePollKey = new ContentTypeId({
 });
 
 interface PollVoteContent {
-  pollId: string;
-  voteIndex: number;
+  pollId: string; // Unique identifier for the poll that this vote is for
+  voteIndex: number; // Index of the choice that the user voted for
 }
 
 export class PollVoteCodec implements ContentCodec<PollVoteContent> {

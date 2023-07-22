@@ -8,7 +8,7 @@ export const ContentTypeEasAttestationKey = new ContentTypeId({
 });
 
 interface EasAttestationContent {
-  attestationUid: string;
+  attestationUid: string; // Unique identifier of the attestation
 }
 
 export class EasAttestationCodec

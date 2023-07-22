@@ -9,6 +9,7 @@ export const ContentUpdateMetadataKey = new ContentTypeId({
 
 interface UpdateMetadataContent {
   metadata?: {
+    // Metadata for the group chat
     [key: string]: string;
   };
 }
