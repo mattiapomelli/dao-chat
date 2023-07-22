@@ -13,6 +13,7 @@ interface PollContent {
   choices: string[];
   start: number;
   end: number;
+  appId: string;
   metadata?: {
     [key: string]: string;
   };

@@ -8,6 +8,7 @@ import {
   APP_NAME,
   DEFAULT_SPACE,
   NETWORK_ID,
+  SNAPSHOT_APP_ID,
   SNAPSHOT_URL,
 } from "@utils/constants";
 
@@ -71,6 +72,7 @@ export const useMakeProposal = ({
             choices,
             start,
             end,
+            appId: SNAPSHOT_APP_ID,
             metadata: {
               space: DEFAULT_SPACE,
               // @ts-ignore
