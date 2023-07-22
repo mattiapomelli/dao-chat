@@ -1,3 +1,4 @@
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import cx from "classnames";
 import { Fragment, useState } from "react";
 import Blockies from "react-blockies";
@@ -18,11 +19,13 @@ import { ProposalForm } from "./proposal-form";
 interface ConversationMessagesProps {
   conversation: ConversationWithTitle;
   className?: string;
+  onBack?(): void;
 }
 
 export const ConversationMessages = ({
   conversation,
   className,
+  onBack,
 }: ConversationMessagesProps) => {
   const { data: space } = useConversationSpace({
     conversation,
@@ -61,11 +64,17 @@ export const ConversationMessages = ({
   });
 
   const conversationMembers =
-    conversation.context?.metadata.initialMembers.split(",") || [];
+    conversation.context?.metadata.initialMembers.split(",").splice(0, 4) || [];
 
   return (
     <div className={cx("flex flex-col h-screen", className)}>
       <div className="flex items-center gap-4 border-b border-b-base-300 p-4">
+        <button
+          className="rounded-btn bg-base-300 p-2 md:hidden"
+          onClick={onBack}
+        >
+          <ArrowLeftIcon className="h-5 w-5 shrink-0" />
+        </button>
         <Blockies
           data-testid="avatar"
           seed={space}

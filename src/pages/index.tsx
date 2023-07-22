@@ -26,7 +26,10 @@ const Home: NextPage = () => {
         })}
       >
         {selectedConversation ? (
-          <ConversationMessages conversation={selectedConversation} />
+          <ConversationMessages
+            conversation={selectedConversation}
+            onBack={() => setSelectedConversation(null)}
+          />
         ) : (
           <div className="flex h-full flex-col items-center justify-center py-40">
             <p>No group chat selected</p>
