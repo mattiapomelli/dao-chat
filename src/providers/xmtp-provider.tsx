@@ -2,6 +2,7 @@ import { Client } from "@xmtp/xmtp-js";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useSigner } from "wagmi";
 
+import { EasAttestationCodec } from "@lib/conversation/eas-attestation-codec";
 import { PollCodec } from "@lib/conversation/poll-codec";
 import { PollVoteCodec } from "@lib/conversation/poll-vote-codex";
 
@@ -26,7 +27,7 @@ export const XmtpProvider = ({ children }: { children: ReactNode }) => {
     // Create a client using keys returned from getKeys
     const client = await Client.create(null, {
       privateKeyOverride: keys,
-      codecs: [new PollCodec(), new PollVoteCodec()],
+      codecs: [new PollCodec(), new PollVoteCodec(), new EasAttestationCodec()],
     });
 
     client.enableGroupChat();

@@ -76,11 +76,13 @@ export const PollChoice = ({
   const snapshotVoteIndex = voteIndex + 1;
 
   const { mutate: createAttestation } = useCreateAttestation({
-    onSuccess(attestationUid) {
-      console.log(
-        "link",
-        `https://sepolia.easscan.org/offchain/attestation/view/${attestationUid}`,
-      );
+    conversation,
+    onSuccess() {
+      onVote?.();
+      // console.log(
+      //   "link",
+      //   `https://sepolia.easscan.org/offchain/attestation/view/${attestationUid}`,
+      // );
     },
   });
 

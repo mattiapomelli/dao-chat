@@ -5,6 +5,7 @@ import Blockies from "react-blockies";
 import { Address } from "@components/address";
 import { useXmtp } from "@providers/xmtp-provider";
 
+import { EasMessage } from "./eas-message";
 import { Poll } from "./poll";
 
 interface MessageProps {
@@ -13,6 +14,8 @@ interface MessageProps {
   allMessages: DecodedMessage[];
   onVote?(): void;
 }
+
+const supportedContentTypes = ["poll", "text", "EasAttestation"];
 
 export const Message = ({
   allMessages,
@@ -24,11 +27,7 @@ export const Message = ({
 
   const isSender = message.senderAddress === userAddress;
 
-  if (
-    message.contentType.typeId !== "poll" &&
-    message.contentType.typeId !== "text"
-  )
-    return null;
+  if (!supportedContentTypes.includes(message.contentType.typeId)) return null;
 
   return (
     <div className={cx("flex", "max-w-[400px]", isSender ? "ml-auto" : "")}>
@@ -53,6 +52,9 @@ export const Message = ({
             allMessages={allMessages}
             onVote={onVote}
           />
+        )}
+        {message.contentType.typeId === "EasAttestation" && (
+          <EasMessage attestationUid={message.content.attestationUid} />
         )}
         {message.contentType.typeId === "text" && <p>{message.content}</p>}
       </div>

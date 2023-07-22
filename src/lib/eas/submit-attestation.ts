@@ -12,8 +12,6 @@ export async function submitSignedAttestation(
     textJson: JSON.stringify(pkg),
   };
 
-  console.log(JSON.stringify(pkg));
-
   return await axios.post<StoreIPFSActionReturn>(
     `${EAS_CONFIG.baseUrl}/offchain/store`,
     data,
