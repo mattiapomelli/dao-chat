@@ -12,6 +12,7 @@ import { Input } from "@components/basic/input";
 import { TextArea } from "@components/basic/textarea/textarea";
 import { useMakeProposal } from "@lib/conversation/use-make-proposal";
 import { DEFAULT_SPACE, PROPOSAL_DAYS } from "@utils/constants";
+import { toSeconds } from "@utils/dates";
 import { ConversationWithTitle } from "types/xmtp";
 
 interface IFormInput {
@@ -66,8 +67,8 @@ export const ProposalForm = ({
       title: data.title,
       body: data.description,
       choices: [data.choice1, data.choice2, data.choice3, data.choice4],
-      start: Math.floor(new Date(data.startDate).getTime() / 1000),
-      end: Math.floor(new Date(data.endDate).getTime() / 1000),
+      start: toSeconds(data.startDate),
+      end: toSeconds(data.endDate),
     });
   };
 

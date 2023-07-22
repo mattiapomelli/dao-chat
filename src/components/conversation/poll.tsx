@@ -5,6 +5,7 @@ import { Button } from "@components/basic/button";
 import WorldcoinIcon from "@icons/worldcoin.svg";
 import { useIsVerifiedWithWorldcoin } from "@lib/worldcoin/use-is-verified-worldcoin";
 import { useVerifyWithWorldcoin } from "@lib/worldcoin/use-verify-worldcoin";
+import { formatDateTime, toSeconds } from "@utils/dates";
 import { env } from "env.mjs";
 
 import { PollChoice } from "./poll-choice";
@@ -26,11 +27,13 @@ export const Poll = ({
   const { mutate: verify } = useVerifyWithWorldcoin();
 
   const pollId = message.content.id;
+  const isExpired = toSeconds(Date.now()) > message.content.end;
 
   return (
     <>
       <h4 className="font-bold">{message.content.title}</h4>
       <p className="mb-3 text-base-content-neutral">{message.content.body}</p>
+      <p className="mb-2">Ends at: {formatDateTime(message.content.end)}</p>
       <div>
         {message.content.choices?.map((choice: string, index: number) => (
           <PollChoice
@@ -38,7 +41,7 @@ export const Poll = ({
             allMessages={allMessages}
             conversation={conversation}
             choice={choice}
-            disabled={!isVerified}
+            disabled={!isVerified || isExpired}
             pollId={pollId}
             proposalId={message.content.metadata.proposalId}
             voteIndex={index}
