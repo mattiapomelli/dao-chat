@@ -1,7 +1,7 @@
 import snapshot from "@snapshot-labs/snapshot.js";
+import { useMutation } from "@tanstack/react-query";
 import { Conversation } from "@xmtp/xmtp-js";
 import { providers } from "ethers";
-import { useMutation } from "wagmi";
 
 import { useXmtp } from "@providers/xmtp-provider";
 import {
@@ -76,7 +76,7 @@ export const useMakeProposal = ({
             metadata: {
               space: DEFAULT_SPACE,
               // @ts-ignore
-              id: receipt.id,
+              proposalId: receipt.id,
             },
           },
           {
