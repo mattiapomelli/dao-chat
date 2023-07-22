@@ -9,6 +9,8 @@ import { useStreamMessages } from "@lib/conversation/use-stream-messages";
 import { ConversationWithTitle } from "types/xmtp";
 
 import { Message } from "./message";
+import { useState } from "react";
+import { ProposalForm } from "./proposal-form";
 
 interface ConversationMessagesProps {
   conversation: ConversationWithTitle;
@@ -17,6 +19,7 @@ interface ConversationMessagesProps {
 export const ConversationMessages = ({
   conversation,
 }: ConversationMessagesProps) => {
+  const [showProposalForm, setShowProposalForm] = useState(false);
   const { data: messages, refetch } = useMessages({
     conversation,
   });
@@ -71,17 +74,28 @@ export const ConversationMessages = ({
           <Message message={message} key={message.id} />
         ))}
       </div>
-      <form onSubmit={onSubmit} className="mt-10 flex flex-row gap-2">
-        <Input
-          placeholder="Write a message"
-          className="flex-1"
-          block
-          {...register("content", { required: "Content is required" })}
-          error={errors.content?.message}
-        />
-        <Button>Send</Button>
-      </form>
-      <Button onClick={sendProposal}>Make Proposal</Button>
+      {showProposalForm ? (
+        <>
+          <ProposalForm conversation={conversation} refetch={refetch} />
+          <Button onClick={() => setShowProposalForm(false)}>Cancel</Button>
+        </>
+      ) : (
+        <>
+          <form onSubmit={onSubmit} className="mt-10 flex flex-row gap-2">
+            <Input
+              placeholder="Write a message"
+              className="flex-1"
+              block
+              {...register("content", { required: "Content is required" })}
+              error={errors.content?.message}
+            />
+            <Button>Send</Button>
+          </form>
+          <Button onClick={() => setShowProposalForm(true)}>
+            Make Proposal
+          </Button>
+        </>
+      )}
     </div>
   );
 };

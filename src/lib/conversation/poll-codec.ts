@@ -8,8 +8,11 @@ export const ContentTypePollKey = new ContentTypeId({
 });
 
 interface PollContent {
-  question: string;
-  options: string[];
+  title: string;
+  body: string;
+  choices: string[];
+  start: number;
+  end: number;
   metadata?: {
     [key: string]: string;
   };

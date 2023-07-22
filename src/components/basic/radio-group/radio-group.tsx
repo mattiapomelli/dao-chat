@@ -17,11 +17,12 @@ export const RadioGroup = ({
   return (
     <BaseRadioGroup value={value} onChange={onValueChange}>
       <div className="flex flex-col gap-2">
-        {items.map((item) => (
-          <BaseRadioGroup.Option key={item} value={item}>
-            {({ checked }) => <RadioItem checked={checked} label={item} />}
-          </BaseRadioGroup.Option>
-        ))}
+        {items &&
+          items.map((item) => (
+            <BaseRadioGroup.Option key={item} value={item}>
+              {({ checked }) => <RadioItem checked={checked} label={item} />}
+            </BaseRadioGroup.Option>
+          ))}
       </div>
     </BaseRadioGroup>
   );
