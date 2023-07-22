@@ -1,4 +1,4 @@
-import { DecodedMessage } from "@xmtp/xmtp-js";
+import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import cx from "classnames";
 import Blockies from "react-blockies";
 
@@ -8,13 +8,27 @@ import { useXmtp } from "@providers/xmtp-provider";
 import { Poll } from "./poll";
 
 interface MessageProps {
+  conversation: Conversation;
   message: DecodedMessage;
+  allMessages: DecodedMessage[];
+  onVote?(): void;
 }
 
-export const Message = ({ message }: MessageProps) => {
+export const Message = ({
+  allMessages,
+  message,
+  conversation,
+  onVote,
+}: MessageProps) => {
   const { userAddress } = useXmtp();
 
   const isSender = message.senderAddress === userAddress;
+
+  if (
+    message.contentType.typeId !== "poll" &&
+    message.contentType.typeId !== "text"
+  )
+    return null;
 
   return (
     <div className={cx("flex", "max-w-[400px]", isSender ? "ml-auto" : "")}>
@@ -32,11 +46,15 @@ export const Message = ({ message }: MessageProps) => {
             className="font-bold"
           />
         </div>
-        {message.contentType.typeId === "poll" ? (
-          <Poll message={message} />
-        ) : (
-          <p>{message.content}</p>
+        {message.contentType.typeId === "poll" && (
+          <Poll
+            message={message}
+            conversation={conversation}
+            allMessages={allMessages}
+            onVote={onVote}
+          />
         )}
+        {message.contentType.typeId === "text" && <p>{message.content}</p>}
       </div>
     </div>
   );

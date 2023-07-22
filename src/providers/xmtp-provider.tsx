@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import { useSigner } from "wagmi";
 
 import { PollCodec } from "@lib/conversation/poll-codec";
+import { PollVoteCodec } from "@lib/conversation/poll-vote-codex";
 
 interface XmptContextValue {
   client: Client | null;
@@ -25,7 +26,7 @@ export const XmtpProvider = ({ children }: { children: ReactNode }) => {
     // Create a client using keys returned from getKeys
     const client = await Client.create(null, {
       privateKeyOverride: keys,
-      codecs: [new PollCodec()],
+      codecs: [new PollCodec(), new PollVoteCodec()],
     });
 
     client.enableGroupChat();
