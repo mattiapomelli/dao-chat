@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@components/basic/button";
 import { Input } from "@components/basic/input";
-import { useMakeProposal } from "@lib/conversation/use-make-proposal";
 import { useMessages } from "@lib/conversation/use-messages";
 import { useSendMessage } from "@lib/conversation/use-send-message";
 import { useStreamMessages } from "@lib/conversation/use-stream-messages";
 import { ConversationWithTitle } from "types/xmtp";
 
 import { Message } from "./message";
+import { ProposalForm } from "./proposal-form";
 
 interface ConversationMessagesProps {
   conversation: ConversationWithTitle;
@@ -17,6 +18,7 @@ interface ConversationMessagesProps {
 export const ConversationMessages = ({
   conversation,
 }: ConversationMessagesProps) => {
+  const [showProposalForm, setShowProposalForm] = useState(false);
   const { data: messages, refetch } = useMessages({
     conversation,
   });
@@ -36,13 +38,6 @@ export const ConversationMessages = ({
     },
   });
 
-  const { mutate: makeProposal } = useMakeProposal({
-    conversation,
-    onSuccess() {
-      refetch();
-    },
-  });
-
   useStreamMessages({
     conversation,
     onMessage() {
@@ -56,13 +51,6 @@ export const ConversationMessages = ({
     });
   });
 
-  const sendProposal = () => {
-    makeProposal({
-      proposal: "Proposal title",
-      options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-    });
-  };
-
   return (
     <div>
       <h1 className="my-6 text-xl font-bold">{conversation.title}</h1>
@@ -71,17 +59,28 @@ export const ConversationMessages = ({
           <Message message={message} key={message.id} />
         ))}
       </div>
-      <form onSubmit={onSubmit} className="mt-10 flex flex-row gap-2">
-        <Input
-          placeholder="Write a message"
-          className="flex-1"
-          block
-          {...register("content", { required: "Content is required" })}
-          error={errors.content?.message}
-        />
-        <Button>Send</Button>
-      </form>
-      <Button onClick={sendProposal}>Make Proposal</Button>
+      {showProposalForm ? (
+        <>
+          <ProposalForm conversation={conversation} refetch={refetch} />
+          <Button onClick={() => setShowProposalForm(false)}>Cancel</Button>
+        </>
+      ) : (
+        <>
+          <form onSubmit={onSubmit} className="mt-10 flex flex-row gap-2">
+            <Input
+              placeholder="Write a message"
+              className="flex-1"
+              block
+              {...register("content", { required: "Content is required" })}
+              error={errors.content?.message}
+            />
+            <Button>Send</Button>
+          </form>
+          <Button onClick={() => setShowProposalForm(true)}>
+            Make Proposal
+          </Button>
+        </>
+      )}
     </div>
   );
 };
