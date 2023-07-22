@@ -2,6 +2,7 @@ import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import cx from "classnames";
 
 import { useSnapshotVote } from "@lib/conversation/use-snapshot-vote";
+import { useXmtp } from "@providers/xmtp-provider";
 
 const getVoteCount = (
   pollId: string,
@@ -19,9 +20,34 @@ const getVoteCount = (
     (message) => message.content.voteIndex === choice,
   );
 
-  const percentage = (choiceVoteMessages.length / totalVotes) * 100;
+  const percentage =
+    totalVotes > 0 ? (choiceVoteMessages.length / totalVotes) * 100 : 0;
 
   return [choiceVoteMessages.length, percentage];
+};
+
+const getVotedChoice = (
+  pollId: string,
+  allMessages: DecodedMessage[],
+  address?: string,
+) => {
+  if (!address) return [false, -1];
+
+  const voteMessages = allMessages.filter(
+    (message) =>
+      message.contentType.typeId === "pollVote" &&
+      message.content.pollId === pollId,
+  );
+
+  const votedMessage = voteMessages.find(
+    (message) => message.senderAddress === address,
+  );
+  const hasVoted = !!votedMessage;
+
+  if (!hasVoted) return [false, -1];
+
+  const votedIndex = votedMessage?.content.voteIndex;
+  return [true, votedIndex];
 };
 
 interface PollChoiceProps {
@@ -45,6 +71,7 @@ export const PollChoice = ({
   proposalId,
   onVote,
 }: PollChoiceProps) => {
+  const { userAddress } = useXmtp();
   const { mutate: snapshotVote } = useSnapshotVote({
     conversation,
     onSuccess() {
@@ -52,8 +79,15 @@ export const PollChoice = ({
     },
   });
 
-  const voteCount = getVoteCount(pollId, allMessages, voteIndex)[0];
-  const percentage = getVoteCount(pollId, allMessages, voteIndex)[1];
+  const voteCountResult = getVoteCount(pollId, allMessages, voteIndex);
+  const voteCount = voteCountResult[0];
+  const percentage = voteCountResult[1].toFixed(2);
+
+  const hasVotedResult = getVotedChoice(pollId, allMessages, userAddress);
+  const hasVoted = hasVotedResult[0];
+  const votedIndex = hasVotedResult[1];
+
+  const isDisabled = disabled || hasVoted;
 
   return (
     <button
@@ -66,12 +100,15 @@ export const PollChoice = ({
         })
       }
       className={cx(
-        "rounded-box w-full py-2 px-4 disabled:cursor-not-allowed bg-base-300",
+        "rounded-box w-full py-2 px-4 disabled:cursor-not-allowed",
         {
-          "hover:cursor-pointer hover:bg-base-200": !disabled,
+          "hover:cursor-pointer hover:bg-base-200": !isDisabled,
+        },
+        {
+          "bg-base-100": votedIndex === voteIndex,
         },
       )}
-      disabled={disabled}
+      disabled={isDisabled}
     >
       <div className="flex justify-between">
         <div className="text-start text-sm font-semibold">{choice}</div>
@@ -83,7 +120,7 @@ export const PollChoice = ({
         className="progress progress-primary"
         value={percentage}
         max="100"
-      ></progress>
+      />
     </button>
   );
 };
