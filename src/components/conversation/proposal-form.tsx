@@ -4,24 +4,26 @@ import {
   RefetchQueryFilters,
 } from "@tanstack/react-query";
 import { DecodedMessage } from "@xmtp/xmtp-js";
-// @ts-ignore
-import DatePicker from "react-datepicker";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import cx from "classnames";
+import { SubmitHandler, useForm } from "react-hook-form";
 
+import { Button } from "@components/basic/button";
+import { Input } from "@components/basic/input";
+import { TextArea } from "@components/basic/textarea/textarea";
 import { useMakeProposal } from "@lib/conversation/use-make-proposal";
 import { DEFAULT_SPACE, PROPOSAL_DAYS } from "@utils/constants";
 import { ConversationWithTitle } from "types/xmtp";
 
 interface IFormInput {
-  space: string;
+  // space: string;
   title: string;
   description: string;
   choice1: string;
   choice2: string;
   choice3: string;
   choice4: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 }
 
 interface ConversationMessagesProps {
@@ -29,181 +31,115 @@ interface ConversationMessagesProps {
   refetch: <TPageData>(
     options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
   ) => Promise<QueryObserverResult<DecodedMessage[], unknown>>;
+  onCancel?: () => void;
+  className?: string;
 }
 
 export const ProposalForm = ({
   conversation,
   refetch,
+  onCancel,
+  className,
 }: ConversationMessagesProps) => {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { isValid, isSubmitting },
-  } = useForm<IFormInput>();
+  const { register, handleSubmit } = useForm<IFormInput>({
+    defaultValues: {
+      startDate: new Date().toISOString().split("T")[0],
+      endDate: new Date(
+        new Date().setDate(new Date().getDate() + PROPOSAL_DAYS),
+      )
+        .toISOString()
+        .split("T")[0],
+    },
+  });
 
-  const { mutate: makeProposal } = useMakeProposal({
+  const { mutate: makeProposal, isLoading } = useMakeProposal({
     conversation,
     onSuccess() {
       refetch();
+      onCancel?.();
     },
   });
 
   const createProposal: SubmitHandler<IFormInput> = async (data) => {
     makeProposal({
+      space: DEFAULT_SPACE, // TODO: change with DAO space
       title: data.title,
       body: data.description,
       choices: [data.choice1, data.choice2, data.choice3, data.choice4],
-      start: Math.floor(data.startDate.getTime() / 1000),
-      end: Math.floor(data.endDate.getTime() / 1000),
+      start: Math.floor(new Date(data.startDate).getTime() / 1000),
+      end: Math.floor(new Date(data.endDate).getTime() / 1000),
     });
   };
 
   return (
-    <form onSubmit={handleSubmit(createProposal)} className="space-y-3">
-      <div>
-        <label htmlFor="space" className="block text-sm font-medium">
-          Space
-        </label>
-        <input
-          {...register("space", { required: true })}
-          autoComplete="off"
-          defaultValue={DEFAULT_SPACE}
-          type="text"
-          name="space"
-          id="space"
-          className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
-        />
-      </div>
-      <div>
-        <label htmlFor="title" className="block text-sm font-medium">
-          Title
-        </label>
-        <input
-          {...register("title", { required: true })}
-          autoComplete="off"
-          type="text"
-          name="title"
-          id="title"
-          className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
-        />
-      </div>
-      <div>
-        <label htmlFor="description" className="block text-sm font-medium">
-          Description (Optional)
-        </label>
-        <textarea
-          {...register("description")}
-          name="description"
-          id="description"
-          className="textarea-bordered textarea-primary textarea textarea-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
-        />
-      </div>
-      <div>
-        <label htmlFor="choice1" className="block text-sm font-medium">
-          Choice #1
-        </label>
-        <input
+    <form
+      onSubmit={handleSubmit(createProposal)}
+      className={cx("flex flex-col gap-2", className)}
+    >
+      <Input
+        {...register("title", { required: true })}
+        autoComplete="off"
+        type="text"
+        label="Title"
+      />
+      <TextArea {...register("description")} label="Description" />
+      <div className="flex w-full gap-2">
+        <Input
           {...register("choice1", { required: true })}
+          label="Choice #1"
           autoComplete="off"
           defaultValue={"One"}
-          type="text"
-          name="choice1"
-          id="choice1"
-          className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
+          className="flex-1"
         />
-      </div>
-      <div>
-        <label htmlFor="choice2" className="block text-sm font-medium">
-          Choice #2
-        </label>
-        <input
+        <Input
           {...register("choice2", { required: true })}
+          label="Choice #2"
           autoComplete="off"
           defaultValue={"Two"}
-          type="text"
-          name="choice2"
-          id="choice2"
-          className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
+          className="flex-1"
         />
       </div>
-      <div>
-        <label htmlFor="choice3" className="block text-sm font-medium">
-          Choice #3
-        </label>
-        <input
+      <div className="flex w-full gap-2">
+        <Input
           {...register("choice3", { required: true })}
+          label="Choice #3"
           autoComplete="off"
           defaultValue={"Three"}
-          type="text"
-          name="choice3"
-          id="choice3"
-          className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
+          className="flex-1"
         />
-      </div>
-      <div>
-        <label htmlFor="choice4" className="block text-sm font-medium">
-          Choice #3
-        </label>
-        <input
+        <Input
           {...register("choice4", { required: true })}
+          label="Choice #4"
           autoComplete="off"
           defaultValue={"Four"}
-          type="text"
-          name="choice4"
-          id="choice4"
-          className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
+          className="flex-1"
         />
       </div>
-      <div>
-        <label htmlFor="startDate" className="block text-sm font-medium">
-          Start date
-        </label>
-        <Controller
-          control={control}
-          name="startDate"
-          defaultValue={new Date()}
-          render={({ field }) => (
-            <DatePicker
-              placeholderText="Select the start date"
-              className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
-              onChange={(startDate: Date) => field.onChange(startDate)}
-              selected={field.value}
-              showTimeSelect
-              dateFormat="Pp"
-            />
-          )}
+
+      <div className="flex w-full gap-2">
+        <Input
+          {...register("startDate", { required: true })}
+          label="Start Date"
+          autoComplete="off"
+          className="flex-1"
+          type="date"
+        />
+        <Input
+          {...register("endDate", { required: true })}
+          label="End Date"
+          autoComplete="off"
+          className="flex-1"
+          type="date"
         />
       </div>
-      <div>
-        <label htmlFor="endDate" className="block text-sm font-medium">
-          End date
-        </label>
-        <Controller
-          control={control}
-          name="endDate"
-          defaultValue={
-            new Date(new Date().setDate(new Date().getDate() + PROPOSAL_DAYS))
-          }
-          render={({ field }) => (
-            <DatePicker
-              placeholderText="Select the end date"
-              className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
-              onChange={(endDate: Date) => field.onChange(endDate)}
-              selected={field.value}
-              showTimeSelect
-              dateFormat="Pp"
-            />
-          )}
-        />
+      <div className="mt-2 flex justify-end gap-2">
+        <Button onClick={() => onCancel?.()} color="neutral">
+          Cancel
+        </Button>
+        <Button type="submit" disabled={isLoading} loading={isLoading}>
+          Create proposal
+        </Button>
       </div>
-      <button
-        type="submit"
-        disabled={!isValid || isSubmitting}
-        className="btn-primary btn-sm btn normal-case"
-      >
-        Create proposal
-      </button>
     </form>
   );
 };

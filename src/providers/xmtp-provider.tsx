@@ -6,7 +6,9 @@ import { PollCodec } from "@lib/conversation/poll-codec";
 
 interface XmptContextValue {
   client: Client | null;
-  initClient: () => void;
+  connect: () => void;
+  isConnected: boolean;
+  userAddress: string | undefined;
 }
 
 const XmtpContext = createContext<XmptContextValue | undefined>(undefined);
@@ -15,7 +17,7 @@ export const XmtpProvider = ({ children }: { children: ReactNode }) => {
   const { data: signer } = useSigner();
   const [client, setClient] = useState<Client | null>(null);
 
-  const initClient = async () => {
+  const connect = async () => {
     if (!signer) return;
 
     // Get the keys using a valid Signer. Save them somewhere secure.
@@ -32,7 +34,14 @@ export const XmtpProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <XmtpContext.Provider value={{ client, initClient }}>
+    <XmtpContext.Provider
+      value={{
+        client,
+        connect,
+        isConnected: client !== null,
+        userAddress: client?.address,
+      }}
+    >
       {children}
     </XmtpContext.Provider>
   );

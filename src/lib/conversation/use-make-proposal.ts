@@ -19,6 +19,7 @@ interface MakeProposalOptions {
 }
 
 interface MakeProposalParams {
+  space: string;
   title: string;
   body: string;
   choices: string[];
@@ -33,7 +34,7 @@ export const useMakeProposal = ({
   const { client } = useXmtp();
 
   return useMutation(
-    async ({ title, body, choices, start, end }: MakeProposalParams) => {
+    async ({ space, title, body, choices, start, end }: MakeProposalParams) => {
       if (!client) return;
 
       const hub = SNAPSHOT_URL;
@@ -49,7 +50,7 @@ export const useMakeProposal = ({
         const address = await signer.getAddress();
 
         const receipt = await snapshotClient.proposal(provider, address, {
-          space: DEFAULT_SPACE,
+          space,
           type: "single-choice",
           title,
           body,
