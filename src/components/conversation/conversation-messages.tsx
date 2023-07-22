@@ -1,15 +1,14 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@components/basic/button";
 import { Input } from "@components/basic/input";
-import { useMakeProposal } from "@lib/conversation/use-make-proposal";
 import { useMessages } from "@lib/conversation/use-messages";
 import { useSendMessage } from "@lib/conversation/use-send-message";
 import { useStreamMessages } from "@lib/conversation/use-stream-messages";
 import { ConversationWithTitle } from "types/xmtp";
 
 import { Message } from "./message";
-import { useState } from "react";
 import { ProposalForm } from "./proposal-form";
 
 interface ConversationMessagesProps {
@@ -39,13 +38,6 @@ export const ConversationMessages = ({
     },
   });
 
-  const { mutate: makeProposal } = useMakeProposal({
-    conversation,
-    onSuccess() {
-      refetch();
-    },
-  });
-
   useStreamMessages({
     conversation,
     onMessage() {
@@ -58,13 +50,6 @@ export const ConversationMessages = ({
       content: data.content,
     });
   });
-
-  const sendProposal = () => {
-    makeProposal({
-      proposal: "Proposal title",
-      options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-    });
-  };
 
   return (
     <div>

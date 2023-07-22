@@ -1,24 +1,16 @@
-import snapshot from "@snapshot-labs/snapshot.js";
-import { ethers, providers } from "ethers";
-import { toast } from "react-toastify";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import DatePicker from "react-datepicker";
-import { useMakeProposal } from "@lib/conversation/use-make-proposal";
-import {
-  APP_NAME,
-  DEFAULT_SPACE,
-  IPFS_GATEWAY,
-  NETWORK_ID,
-  PROPOSAL_DAYS,
-  SNAPSHOT_URL,
-} from "@utils/constants";
-import { ConversationWithTitle } from "types/xmtp";
 import {
   QueryObserverResult,
   RefetchOptions,
   RefetchQueryFilters,
 } from "@tanstack/react-query";
 import { DecodedMessage } from "@xmtp/xmtp-js";
+// @ts-ignore
+import DatePicker from "react-datepicker";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
+import { useMakeProposal } from "@lib/conversation/use-make-proposal";
+import { DEFAULT_SPACE, PROPOSAL_DAYS } from "@utils/constants";
+import { ConversationWithTitle } from "types/xmtp";
 
 interface IFormInput {
   space: string;
@@ -47,8 +39,7 @@ export const ProposalForm = ({
     control,
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isValid, isSubmitting },
+    formState: { isValid, isSubmitting },
   } = useForm<IFormInput>();
 
   const { mutate: makeProposal } = useMakeProposal({
@@ -71,7 +62,7 @@ export const ProposalForm = ({
   return (
     <form onSubmit={handleSubmit(createProposal)} className="space-y-3">
       <div>
-        <label htmlFor="space" className="block font-medium text-sm">
+        <label htmlFor="space" className="block text-sm font-medium">
           Space
         </label>
         <input
@@ -85,7 +76,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="title" className="block font-medium text-sm">
+        <label htmlFor="title" className="block text-sm font-medium">
           Title
         </label>
         <input
@@ -98,7 +89,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="description" className="block font-medium text-sm">
+        <label htmlFor="description" className="block text-sm font-medium">
           Description (Optional)
         </label>
         <textarea
@@ -109,7 +100,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="choice1" className="block font-medium text-sm">
+        <label htmlFor="choice1" className="block text-sm font-medium">
           Choice #1
         </label>
         <input
@@ -123,7 +114,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="choice2" className="block font-medium text-sm">
+        <label htmlFor="choice2" className="block text-sm font-medium">
           Choice #2
         </label>
         <input
@@ -137,7 +128,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="choice3" className="block font-medium text-sm">
+        <label htmlFor="choice3" className="block text-sm font-medium">
           Choice #3
         </label>
         <input
@@ -151,7 +142,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="choice4" className="block font-medium text-sm">
+        <label htmlFor="choice4" className="block text-sm font-medium">
           Choice #3
         </label>
         <input
@@ -165,7 +156,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="startDate" className="block font-medium text-sm">
+        <label htmlFor="startDate" className="block text-sm font-medium">
           Start date
         </label>
         <Controller
@@ -176,7 +167,7 @@ export const ProposalForm = ({
             <DatePicker
               placeholderText="Select the start date"
               className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
-              onChange={(startDate) => field.onChange(startDate)}
+              onChange={(startDate: Date) => field.onChange(startDate)}
               selected={field.value}
               showTimeSelect
               dateFormat="Pp"
@@ -185,7 +176,7 @@ export const ProposalForm = ({
         />
       </div>
       <div>
-        <label htmlFor="endDate" className="block font-medium text-sm">
+        <label htmlFor="endDate" className="block text-sm font-medium">
           End date
         </label>
         <Controller
@@ -198,7 +189,7 @@ export const ProposalForm = ({
             <DatePicker
               placeholderText="Select the end date"
               className="input-bordered input-primary input input-sm focus:outline-0 focus:ring-1 focus:ring-inset focus:ring-primary"
-              onChange={(endDate) => field.onChange(endDate)}
+              onChange={(endDate: Date) => field.onChange(endDate)}
               selected={field.value}
               showTimeSelect
               dateFormat="Pp"

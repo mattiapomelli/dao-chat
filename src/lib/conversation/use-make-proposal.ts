@@ -1,17 +1,17 @@
 import snapshot from "@snapshot-labs/snapshot.js";
 import { Conversation } from "@xmtp/xmtp-js";
+import { providers } from "ethers";
 import { useMutation } from "wagmi";
 
 import { useXmtp } from "@providers/xmtp-provider";
-
-import { ContentTypePollKey } from "./poll-codec";
 import {
   APP_NAME,
   DEFAULT_SPACE,
   NETWORK_ID,
   SNAPSHOT_URL,
 } from "@utils/constants";
-import { providers } from "ethers";
+
+import { ContentTypePollKey } from "./poll-codec";
 
 interface MakeProposalOptions {
   conversation: Conversation;
@@ -57,6 +57,7 @@ export const useMakeProposal = ({
           start,
           end,
           snapshot: 17745695, //(await provider.getBlockNumber()) - 128,
+          // @ts-ignore
           network: NETWORK_ID,
           plugins: JSON.stringify({}),
           app: APP_NAME,
@@ -71,6 +72,7 @@ export const useMakeProposal = ({
             end,
             metadata: {
               space: DEFAULT_SPACE,
+              // @ts-ignore
               id: receipt.id,
             },
           },
