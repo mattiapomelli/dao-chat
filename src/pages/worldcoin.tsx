@@ -1,5 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { CredentialType, IDKitWidget } from "@worldcoin/idkit";
-import { useAccount, useQuery } from "wagmi";
+import { useAccount } from "wagmi";
 
 import { Spinner } from "@components/basic/spinner";
 import { env } from "env.mjs";
@@ -9,14 +10,14 @@ import type { ISuccessResult } from "@worldcoin/idkit";
 export default function Home() {
   const { address } = useAccount();
 
-  const { data: isVerified, isLoading } = useQuery<boolean>(
-    ["is-verified", address],
-    async () => {
+  const { data: isVerified, isLoading } = useQuery<boolean>({
+    queryKey: ["isVerified", address],
+    queryFn: async () => {
       const res = await fetch(`/api/is-verified?address=${address}`);
       const data = await res.json();
       return data.verified;
     },
-  );
+  });
 
   const onSuccess = (result: ISuccessResult) => {
     console.log("Result ", result);
@@ -59,7 +60,18 @@ export default function Home() {
   }
 
   if (isVerified) {
-    return <div>Verified</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
+        Verified
+      </div>
+    );
   }
 
   return (
