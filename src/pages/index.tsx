@@ -1,59 +1,30 @@
 import React, { useState } from "react";
 
-import { Button } from "@components/basic/button";
 import { ConversationMessages } from "@components/conversation/conversation-messages";
-import { useConversations } from "@lib/conversation/use-conversations";
-import { useCreateConversation } from "@lib/conversation/use-create-conversation";
-import { useXmtp } from "@providers/xmtp-provider";
+import { ConversationsList } from "@components/conversation/conversations-list";
 import { ConversationWithTitle } from "types/xmtp";
 
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
-  const { initClient, client } = useXmtp();
-  const { data: conversations, refetch } = useConversations();
-
-  const [selectedConversation, setselectedConversation] =
+  const [selectedConversation, setSelectedConversation] =
     useState<ConversationWithTitle | null>(null);
 
-  const { mutate: createConversation } = useCreateConversation({
-    onSuccess() {
-      refetch();
-    },
-  });
-
-  const onCreateConversation = async () => {
-    createConversation({
-      title: "Test",
-    });
-  };
-
   return (
-    <div>
-      <div>{client?.address}</div>
-      <Button onClick={initClient}>Connect</Button>
-      <Button onClick={onCreateConversation}>Start conversation</Button>
-
-      <div className="flex gap-6">
-        <div className="flex-1">
-          <h1 className="my-6 text-xl font-bold">Your DAOs</h1>
-          <div className="flex flex-col gap-4">
-            {conversations?.map((conversation) => (
-              <div
-                key={conversation.context?.conversationId}
-                className="cursor-pointer rounded-md bg-base-200 p-4"
-                onClick={() => setselectedConversation(conversation)}
-              >
-                {conversation.title}
-              </div>
-            ))}
+    <div className="flex">
+      <ConversationsList
+        selectedConversation={selectedConversation}
+        onSelectConversation={setSelectedConversation}
+        className="h-screen basis-1/3 overflow-auto"
+      />
+      <div className="h-screen flex-1">
+        {selectedConversation ? (
+          <ConversationMessages conversation={selectedConversation} />
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center py-40">
+            <p>No group chat selected</p>
           </div>
-        </div>
-        <div className="flex-1">
-          {selectedConversation && (
-            <ConversationMessages conversation={selectedConversation} />
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
