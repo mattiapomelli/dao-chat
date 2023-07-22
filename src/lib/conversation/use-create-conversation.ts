@@ -25,6 +25,11 @@ interface SnapshotSpaceResult {
   space: {
     name: string;
     strategies: SnapshotStrategy[];
+    voteValidation: {
+      params: {
+        minScore: number;
+      };
+    };
   };
 }
 
@@ -58,19 +63,21 @@ export const useCreateConversation = (options?: SendMessageOptions) => {
           minScore,
         });
 
-        // Remove the current user from the list of addresses
-        const memberAddresses = addressesWithXmtpEnabled.filter(
-          (address) => address.toLowerCase() !== client.address.toLowerCase(),
-        );
+        if (addressesWithXmtpEnabled) {
+          // Remove the current user from the list of addresses
+          const memberAddresses = addressesWithXmtpEnabled.filter(
+            (address) => address.toLowerCase() !== client.address.toLowerCase(),
+          );
 
-        const groupConversation =
-          await client.conversations.newGroupConversation(memberAddresses);
+          const groupConversation =
+            await client.conversations.newGroupConversation(memberAddresses);
 
-        const groupChat = await GroupChat.fromConversation(
-          client,
-          groupConversation,
-        );
-        await groupChat.changeTitle(spaceName);
+          const groupChat = await GroupChat.fromConversation(
+            client,
+            groupConversation,
+          );
+          await groupChat.changeTitle(spaceName);
+        }
       }
     },
     {
