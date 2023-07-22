@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Button } from "@components/basic/button";
 import { CreateChatModal } from "@components/create-chat-modal";
+import { WalletStatus } from "@components/wallet/wallet-status";
 import { useConversations } from "@lib/conversation/use-conversations";
 import { useXmtp } from "@providers/xmtp-provider";
 import { ConversationWithTitle } from "types/xmtp";
@@ -34,6 +35,7 @@ export const ConversationsList = ({
           onClose={() => setModalOpen(false)}
           onSuccess={refetch}
         />
+        <WalletStatus />
         <Button onClick={() => setModalOpen(true)}>New DAO Chat</Button>
       </div>
       <div className="flex flex-col">

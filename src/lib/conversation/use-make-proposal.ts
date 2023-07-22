@@ -2,6 +2,7 @@ import snapshot from "@snapshot-labs/snapshot.js";
 import { useMutation } from "@tanstack/react-query";
 import { Conversation } from "@xmtp/xmtp-js";
 import { providers } from "ethers";
+// @ts-ignore
 import { v4 as uuidv4 } from "uuid";
 
 import { useXmtp } from "@providers/xmtp-provider";
