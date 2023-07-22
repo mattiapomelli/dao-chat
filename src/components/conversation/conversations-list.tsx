@@ -27,9 +27,11 @@ const ConversationListInner = ({
   const { isConnected: isConnectedToXmtp, connect } = useXmtp();
 
   if (isReconnecting || isConnecting) {
-    <div className="flex flex-col items-center justify-center gap-4 px-4 py-20">
-      <Spinner />
-    </div>;
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 px-4 py-20">
+        <Spinner />
+      </div>
+    );
   }
 
   if (!isConnected) {

@@ -28,10 +28,11 @@ export const Poll = ({
 
   const pollId = message.content.id;
   const isExpired = toSeconds(Date.now()) > message.content.end;
+  const snapshotUrl = `https://demo.snapshot.org/#/${message.content?.metadata?.space}/proposal/${message.content?.metadata?.proposalId}`;
 
   return (
     <>
-      <h4 className="font-bold">{message.content.title}</h4>
+      <p className="font-bold">{message.content.title} ( )</p>
       <p className="mb-3 text-base-content-neutral">{message.content.body}</p>
       <p className="mb-2">Ends at: {formatDateTime(message.content.end)}</p>
       <div>
@@ -76,6 +77,14 @@ export const Poll = ({
             </IDKitWidget>
           </div>
         )}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 underline"
+          href={snapshotUrl}
+        >
+          View on Snapshot
+        </a>
       </div>
     </>
   );

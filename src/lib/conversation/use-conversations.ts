@@ -39,6 +39,8 @@ export const useConversations = () => {
           }),
         );
 
+      // console.log("conversationsWithTitles", conversationsWithTitles);
+
       return conversationsWithTitles.reverse();
     },
     enabled: !!client,
