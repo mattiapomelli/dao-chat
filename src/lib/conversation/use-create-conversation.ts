@@ -38,23 +38,22 @@ export const useCreateConversation = (options?: SendMessageOptions) => {
       const result = (await getSpace({
         spaceId: title,
       })) as SnapshotSpaceResult;
-      console.log("Space:", result);
-      if (
-        result.space.strategies &&
-        result.space.strategies.length &&
-        result.space.strategies[0].name === "erc721"
-      ) {
-        const tokenAddress = result.space.strategies[0].params.address;
+      if (result.space.strategies && result.space.strategies.length) {
         const spaceName = result.space.name;
+        const minScore = result.space.voteValidation.params.minScore;
+        const tokenAddresses = result.space.strategies.map(
+          (strategy) => strategy.params.address,
+        );
 
         const addressesWithXmtpEnabled = await getConversationMembers({
           blockchain: "polygon",
-          tokenAddress: tokenAddress,
+          tokenAddresses,
+          minScore,
         });
 
         // Remove the current user from the list of addresses
         const memberAddresses = addressesWithXmtpEnabled.filter(
-          (address) => address !== client.address,
+          (address) => address.toLowerCase() !== client.address.toLowerCase(),
         );
 
         const groupConversation =
