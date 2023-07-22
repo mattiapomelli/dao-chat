@@ -104,6 +104,7 @@ export const ConversationsList = ({
           onClose={() => setModalOpen(false)}
           onSuccess={refetch}
         />
+        <WalletStatus />
         <Button onClick={() => setModalOpen(true)}>New DAO Chat</Button>
       </div>
       <div className="flex flex-col">
