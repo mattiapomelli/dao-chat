@@ -1,7 +1,7 @@
 import { Conversation, DecodedMessage } from "@xmtp/xmtp-js";
 import cx from "classnames";
 
-import { useSnapshotVote } from "@lib/conversation/use-snapshot-vote";
+import { useVote } from "@lib/conversation/use-vote";
 import { useXmtp } from "@providers/xmtp-provider";
 
 const getVoteCount = (
@@ -72,7 +72,7 @@ export const PollChoice = ({
   onVote,
 }: PollChoiceProps) => {
   const { userAddress } = useXmtp();
-  const { mutate: snapshotVote } = useSnapshotVote({
+  const { mutate: vote } = useVote({
     conversation,
     onSuccess() {
       onVote?.();
@@ -88,12 +88,13 @@ export const PollChoice = ({
   const votedIndex = hasVotedResult[1];
 
   const isDisabled = disabled || hasVoted;
+  // const isDisabled = false;
 
   return (
     <button
       key={choice}
       onClick={() =>
-        snapshotVote({
+        vote({
           pollId,
           proposalId: proposalId,
           vote: voteIndex + 1,

@@ -18,10 +18,7 @@ interface VoteProposalParams {
   vote: number;
 }
 
-export const useSnapshotVote = ({
-  onSuccess,
-  conversation,
-}: VoteProposalOptions) => {
+export const useVote = ({ onSuccess, conversation }: VoteProposalOptions) => {
   return useMutation(
     async ({ pollId, proposalId, vote }: VoteProposalParams) => {
       const hub = SNAPSHOT_URL;
@@ -39,6 +36,7 @@ export const useSnapshotVote = ({
         console.log("pid", proposalId);
         console.log("vote", vote);
 
+        // Vote on Snapshot
         const receipt = await client.vote(provider, address, {
           space: DEFAULT_SPACE,
           proposal: proposalId,
@@ -48,6 +46,7 @@ export const useSnapshotVote = ({
         });
         console.log("Vote result: ", receipt);
 
+        // Send vote message on XMTP
         const message = await conversation.send(
           {
             pollId,
