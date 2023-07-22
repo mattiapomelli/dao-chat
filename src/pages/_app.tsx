@@ -8,7 +8,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { DefaultSeo } from "next-seo";
 import { ThemeProvider } from "next-themes";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
+// import { alchemyProvider } from "wagmi/providers/alchemy";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 
 import { CHAINS } from "@constants/chains";
@@ -22,7 +23,12 @@ import type { ExtendedPage } from "@types";
 import type { AppProps } from "next/app";
 
 const { chains, provider } = configureChains(CHAINS, [
-  alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
+  // alchemyProvider({ apiKey: env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
+  jsonRpcProvider({
+    rpc: () => ({
+      http: `https://eth-sepolia.g.alchemy.com/v2/${env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+    }),
+  }),
   publicProvider(),
 ]);
 

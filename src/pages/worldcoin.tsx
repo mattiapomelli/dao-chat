@@ -7,7 +7,7 @@ import { env } from "env.mjs";
 
 import type { ISuccessResult } from "@worldcoin/idkit";
 
-export default function Home() {
+export default function WorldcoinPage() {
   const { address } = useAccount();
 
   const { data: isVerified, isLoading } = useQuery<boolean>({
