@@ -30,7 +30,7 @@ export const IntroductionSecion = () => {
     <section className="rounded-box flex flex-col items-center gap-10 bg-primary px-5 py-20 text-center text-primary-content">
       <h2 className="mt-4 text-center text-6xl font-bold">Meet DAOChat</h2>
       <p className="max-w-[46rem] text-4xl">
-        Governance in the one place everyone goes: the group chat
+        Governance in the one place everyone is familiar with: the group chat
       </p>
       <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2">
         <FeatureCard
