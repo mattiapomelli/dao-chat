@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Conversation } from "@xmtp/xmtp-js";
 import { ethers, providers } from "ethers";
 import { v4 as uuidv4 } from "uuid";
+// import { polygon } from "wagmi/chains";
 
 import { useXmtp } from "@providers/xmtp-provider";
 import {
@@ -45,18 +46,25 @@ export const useMakeProposal = ({
       if (window.ethereum) {
         // @ts-ignore
         await window.ethereum.enable();
+
         const provider = new providers.Web3Provider(
           window.ethereum as providers.ExternalProvider,
         );
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
+        // const signer = provider.getSigner();
+        // const address = await signer.getAddress();
 
         const ethereumProvider = new ethers.providers.JsonRpcProvider(
           "https://eth.llamarpc.com	",
+          // "https://polygon.llamarpc.com",
         );
         const lastBlock = await ethereumProvider.getBlockNumber();
 
-        const receipt = await snapshotClient.proposal(provider, address, {
+        // const realLastBlock = await provider.getBlockNumber();
+        // console.log("realLastBlock", realLastBlock);
+
+        const [account] = await provider.listAccounts();
+
+        const receipt = await snapshotClient.proposal(provider, account, {
           space,
           type: "single-choice",
           title,
@@ -65,8 +73,9 @@ export const useMakeProposal = ({
           start,
           end,
           snapshot: lastBlock - 128,
-          // @ts-ignore
-          network: 1,
+          //@ts-ignore
+          network: "1",
+          discussion: "",
           plugins: JSON.stringify({}),
           app: APP_NAME,
         });
